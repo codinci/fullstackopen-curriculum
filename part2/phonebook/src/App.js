@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import nameService from "./services/names";
 import PersonForm from "./components/PersonForm";
-import Search from "./components/Search";
 import Person from "./components/Person";
 
 const App = () => {
