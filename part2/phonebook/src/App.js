@@ -11,6 +11,7 @@ const App = () => {
     nameService.getAll().then((initialPersons) => setPersons(initialPersons));
   }, []);
 
+
   const handleSearch = (event) => {
     setSearchField(event.target.value);
   };
@@ -23,14 +24,14 @@ const App = () => {
   });
 
   const handleDelete = (event) => {
-    const id = parseInt(event.target.value);
+    const id = event.target.value;
     const item = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${item.name}`)) {
       nameService
         .deleteObject(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id))
-        });
+        })
     }
   };
 

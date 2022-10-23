@@ -8,8 +8,6 @@ const PersonForm = ({ persons, setPersons, handleSearch }) => {
   const [newNumber, setNewNumber] = useState("");
   const [status, setStatus] = useState(null);
 
-  console.log(newName);
-
   const addPerson = (event) => {
     event.preventDefault();
     const nameObject = {
@@ -48,7 +46,7 @@ const PersonForm = ({ persons, setPersons, handleSearch }) => {
           .catch((error) => {
             setStatus({
               type: "error",
-              message: `Information of ${newName} has already been removed from server`,
+              message: error.response.data.error,
             });
             setTimeout(() => {
               setStatus(null);
@@ -65,6 +63,12 @@ const PersonForm = ({ persons, setPersons, handleSearch }) => {
           setTimeout(() => {
             setStatus(null);
           }, 5000);
+        })
+        .catch(error => {
+          setStatus({
+            type: "error",
+            message: error.response.data.error,
+          });
         })
     }
     setNewName('');
