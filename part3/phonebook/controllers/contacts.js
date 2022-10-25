@@ -15,7 +15,7 @@ contactsRouter.get('/:id', async (request, response) => {
 	}
 });
 
-contactsRouter.put('/:id', async (request, response) => {
+contactsRouter.put('/:id', async (request, response, next) => {
 	const body = request.body;
 
 	const person = {
@@ -23,7 +23,7 @@ contactsRouter.put('/:id', async (request, response) => {
 		number: body.number,
 	};
 
-	const updatedContact = await Contacts.findByIdAndUpdate(
+	Contacts.findByIdAndUpdate(
 		request.params.id,
 		person,
 		{
@@ -31,12 +31,11 @@ contactsRouter.put('/:id', async (request, response) => {
 			runValidators: true,
 			context: 'query',
 		}
-	);
-	if (updatedContact) {
-		response.json(updatedContact);
-	} else {
-		response.status(404).end();
-	}
+	)
+		.then(updatedContact => {
+			response.json(updatedContact);
+		})
+		.catch(error => next(error));
 });
 
 contactsRouter.post('/', async (request, response) => {
