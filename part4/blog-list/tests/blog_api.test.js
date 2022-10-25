@@ -11,7 +11,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialBlogs);
 });
 
-describe('when there is initially some blogs saved', () => {
+describe("when there is initially some blogs saved", () => {
   test("blogs are returned as json", async () => {
     await api
       .get("/api/blog")
@@ -23,9 +23,9 @@ describe('when there is initially some blogs saved', () => {
     const response = await api.get("/api/blog");
     expect(response.body).toHaveLength(helper.initialBlogs.length);
   });
-})
+});
 
-describe('addition of a blog', () => {
+describe("addition of a blog", () => {
   test("succeeds with valid data", async () => {
     const newBlog = {
       title: "Type wars",
@@ -69,9 +69,9 @@ describe('addition of a blog', () => {
     const invalidBlog = await helper.blogsInDb();
     expect(invalidBlog).toHaveLength(helper.initialBlogs.length);
   });
-})
+});
 
-describe('verify data', () => {
+describe("verify data", () => {
   test("contains _id property", async () => {
     const response = await api.get("/api/blog");
     response.body.forEach((blog) => {
@@ -97,8 +97,7 @@ describe('verify data', () => {
     expect(lastItem).toHaveProperty("likes");
     expect(lastItem.likes).toBe(0);
   });
-
-})
+});
 
 describe("deletion of a blog", () => {
   test("succeeds with status code 204 if id is valid", async () => {
@@ -117,17 +116,17 @@ describe("deletion of a blog", () => {
   });
 });
 
-describe('update of a blog', () => {
-  test('succeeds with updated data', async () => {
+describe("update of a blog", () => {
+  test("succeeds with updated data", async () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToUpdate = blogsAtStart[0];
 
     const updatedBlog = {
       title: "React patterns",
-    author: "Michael Chan",
-    url: "https://reactpatterns.com/",
-    likes: 10,
-    }
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 10,
+    };
 
     await api
       .put(`/api/blog/${blogToUpdate._id}`)
@@ -135,12 +134,12 @@ describe('update of a blog', () => {
       .expect(200)
       .expect("Content-Type", /application\/json/);
 
-    const blogsAtUpdate = await helper.blogsInDb()
+    const blogsAtUpdate = await helper.blogsInDb();
     const blogAfterUpdate = blogsAtUpdate[0];
 
-    expect(blogAfterUpdate.likes).toBe(10)
-  })
-})
+    expect(blogAfterUpdate.likes).toBe(10);
+  });
+});
 
 afterAll(() => {
   mongoose.connection.close();

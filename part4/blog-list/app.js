@@ -2,11 +2,11 @@ const blogsRouter = require("./controller/blogs");
 const config = require("./utils/config");
 const cors = require("cors");
 const express = require("express");
+require("express-async-errors");
 const app = express();
 const logger = require("./utils/logger");
 const middleware = require('./utils/middleware');
 const mongoose = require("mongoose");
-require("express-async-errors");
 
 logger.info("connecting to", config.MONGODB_URI);
 
@@ -23,8 +23,9 @@ app.use(cors());
 app.use(express.static("build"));
 app.use(express.json());
 
-
 app.use("/api/blog", blogsRouter);
-app.use(middleware)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app;
