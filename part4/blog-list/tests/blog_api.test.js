@@ -183,7 +183,7 @@ describe("tests for blogs", () => {
         title: "React patterns",
         author: "Michael Chan",
         url: "https://reactpatterns.com/",
-        likes: 10,
+        likes: 10
       };
 
       await api
