@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useState } from "react";
 
-const Blog = ({ blog, updateBlog }) => {
-  const [likes, setLikes] = useState(blog.likes)
+const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
+  const [likes, setLikes] = useState(blog.likes);
   const [visible, setVisible] = useState(false);
   const showWhenVisible = { display: visible ? "" : "none" };
+  const deleteAccess = {
+    display: blog.user[0].username === user.username ? "" : "none",
+  };
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,8 +15,8 @@ const Blog = ({ blog, updateBlog }) => {
     marginBottom: 5,
   };
 
-  const handleClick = () => {
-    setLikes((prevLikes) => prevLikes + 1)
+  const handleUpdate = () => {
+    setLikes((prevLikes) => prevLikes + 1);
     const updatedBlog = {
       title: blog.title,
       author: blog.author,
@@ -21,22 +24,33 @@ const Blog = ({ blog, updateBlog }) => {
       url: blog.url,
       user: blog.user[0].id,
     };
-    updateBlog(blog.id, updatedBlog)
-  }
+    updateBlog(blog.id, updatedBlog);
+  };
 
+  const handleDelete = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      deleteBlog(blog.id);
+    }
+  };
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}{" "}<button onClick={({ target }) => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
+      {blog.title} {blog.author}{" "}
+      <button onClick={({ target }) => setVisible(!visible)}>
+        {visible ? "hide" : "view"}
+      </button>
       <div style={showWhenVisible}>
-        {blog.url}<br></br>
-        Likes {likes}{" "} <button onClick={handleClick}>like</button><br></br>
+        {blog.url}
+        <br></br>
+        Likes {likes} <button onClick={handleUpdate}>like</button>
+        <br></br>
         {blog.user[0].name} <br></br>
-        <button>remove</button>
+        <div style={deleteAccess}>
+          <button onClick={handleDelete}>remove</button>
+        </div>
       </div>
     </div>
-
   );
-}
+};
 
-export default Blog
+export default Blog;

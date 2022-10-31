@@ -14,6 +14,16 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
 
+  const blogFormRef = useRef();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
+    };
+    fetchData().catch(console.error);
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -44,6 +54,15 @@ const App = () => {
       }, 5000);
     }
   };
+
+   useEffect(() => {
+     const loggedUserJSON = window.localStorage.getItem("loggedBlogUser");
+     if (loggedUserJSON) {
+       const user = JSON.parse(loggedUserJSON);
+       setUser(user);
+       blogService.setToken(user.token);
+     }
+   }, []);
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogUser");
@@ -81,7 +100,6 @@ const App = () => {
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
     } catch (exception) {
-      console.log(exception);
       setMessage({
         type: "error",
         info: `${exception.response.data.error}`,
@@ -90,31 +108,30 @@ const App = () => {
         setMessage(null);
       }, 5000);
     }
-
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-    }
-    fetchData()
-      .catch(console.error)
-  }, []);
+  const deleteBlog = async (id) => {
+      console.log(user.token);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogUser");
-
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+    try {
+        await blogService.deleteBlog(id)
+        setBlogs(blogs.filter(blog => blog.id !== id))
+    } catch (exception) {
+       setMessage({
+        type: "error",
+        info: `${exception.response.data.error}`,
+      });
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
     }
-  }, []);
+  }
+
+
+
 
   const sortByLikes = [...blogs].sort((a, b) => b.likes - a.likes);
 
-  const blogFormRef = useRef();
 
   return (
     <div>
@@ -138,7 +155,7 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Toggable>
           {sortByLikes.map((blog) => (
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
           ))}
         </div>
       )}
