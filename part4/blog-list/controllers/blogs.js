@@ -5,7 +5,11 @@ const { userExtractor } = require("../utils/middleware");
 const User = require('../models/user');
 
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  const blogs = await Blog.find({}).populate("user", {
+    username: 1,
+    name: 1,
+    id: 1
+  });
   response.json(blogs);
 });
 
@@ -35,7 +39,6 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
 
 blogsRouter.put("/:id", async (request, response) => {
   const blog = request.body;
-
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
     runValidators: true,

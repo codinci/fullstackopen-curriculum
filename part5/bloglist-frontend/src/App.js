@@ -97,8 +97,7 @@ const App = () => {
   const updateBlog = async (id, updatedBlogObject) => {
     try {
       await blogService.update(id, updatedBlogObject)
-      const updatedBlogs = await blogService.getAll()
-      setBlogs(updatedBlogs)
+      setBlogs(blogs.map (blog => blog.id !== id ? blog : { ...blog, likes: blog.likes + 1 }))
     } catch (exception) {
       setMessage({
         type: 'error',
@@ -111,8 +110,6 @@ const App = () => {
   }
 
   const deleteBlog = async (id) => {
-    console.log(user.token)
-
     try {
       await blogService.deleteBlog(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
@@ -127,11 +124,7 @@ const App = () => {
     }
   }
 
-
-
-
   const sortByLikes = [...blogs].sort((a, b) => b.likes - a.likes)
-
 
   return (
     <div>
@@ -155,7 +148,13 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Toggable>
           {sortByLikes.map((blog) => (
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateBlog={updateBlog}
+              deleteBlog={deleteBlog}
+              user={user}
+            />
           ))}
         </div>
       )}

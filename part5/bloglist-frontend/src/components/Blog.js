@@ -1,11 +1,10 @@
 import { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
-  const [likes, setLikes] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
   const deleteAccess = {
-    display: blog.user[0].username === user.username ? '' : 'none',
+    display: blog.user.username === user.username ? '' : 'none',
   }
   const blogStyle = {
     paddingTop: 10,
@@ -16,13 +15,13 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   }
 
   const handleUpdate = () => {
-    setLikes((prevLikes) => prevLikes + 1)
+    // const updatedBlog ={ ...blog, likes:blog.likes + 1 }
     const updatedBlog = {
       title: blog.title,
       author: blog.author,
-      likes: likes + 1,
+      likes: blog.likes + 1,
       url: blog.url,
-      user: blog.user[0].id,
+      user: blog.user.id,
     }
     updateBlog(blog.id, updatedBlog)
   }
@@ -35,18 +34,22 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}{' '}
+      <span>{blog.title}</span>
+      <span>{blog.author}</span>{' '}
       <button onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'view'}
       </button>
       <div style={showWhenVisible}>
-        {blog.url}
-        <br></br>
-        Likes {likes} <button onClick={handleUpdate}>like</button>
-        <br></br>
-        {blog.user[0].name} <br></br>
+        <p style={showWhenVisible}>{blog.url}</p>
+        <span style={showWhenVisible}>
+          Likes<span style={showWhenVisible}>{blog.likes}</span>
+        </span>
+        <button onClick={handleUpdate}>like</button>
+        <p> {blog.user.name}</p>
         <div style={deleteAccess}>
-          <button style={{ backgroundColor: 'blue' }} onClick={handleDelete}>remove</button>
+          <button style={{ backgroundColor: 'blue' }} onClick={handleDelete}>
+            remove
+          </button>
         </div>
       </div>
     </div>
