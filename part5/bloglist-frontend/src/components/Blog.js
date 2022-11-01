@@ -46,7 +46,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
         <br></br>
         {blog.user[0].name} <br></br>
         <div style={deleteAccess}>
-          <button onClick={handleDelete}>remove</button>
+          <button style={{backgroundColor: 'blue'}} onClick={handleDelete}>remove</button>
         </div>
       </div>
     </div>

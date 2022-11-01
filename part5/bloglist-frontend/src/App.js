@@ -151,7 +151,7 @@ const App = () => {
           <h2>blogs</h2>
           <span>{user.name} logged in</span>{" "}
           <button onClick={handleLogout}>log out</button>
-          <Toggable buttonLabel="new blog" ref={blogFormRef}>
+          <Toggable buttonLabel='create new blog' ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Toggable>
           {sortByLikes.map((blog) => (
