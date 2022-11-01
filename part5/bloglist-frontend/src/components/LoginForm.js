@@ -12,31 +12,31 @@ const LoginForm = ({
       <h2>Log in to application</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          {" "}
-          username{" "}
+          {' '}
+          username{' '}
           <input
             type="text"
             value={username}
             name="Username"
             onChange={handleUserNameChange}
-          />{" "}
-        </div>{" "}
+          />{' '}
+        </div>{' '}
 
         <div>
-          {" "}
-          password{" "}
+          {' '}
+          password{' '}
           <input
             type="password"
             value={password}
             name="Password"
             onChange={handlePasswordChange}
-          />{" "}
-        </div>{" "}
+          />{' '}
+        </div>{' '}
         <button type="submit">login</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -46,4 +46,4 @@ LoginForm.propTypes = {
   password: PropTypes.string.isRequired
 }
 
-export default LoginForm;
+export default LoginForm
