@@ -41,11 +41,13 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
       </button>
       <div style={showWhenVisible}>
         <p style={showWhenVisible}>{blog.url}</p>
-        <span style={showWhenVisible}>
-          Likes<span style={showWhenVisible}>{blog.likes}</span>
-        </span>
-        <button onClick={handleUpdate}>like</button>
-        <p> {blog.user.name}</p>
+        <div style={showWhenVisible}>
+          Likes  {blog.likes}
+          <button onClick={handleUpdate}>
+            like
+          </button>
+        </div>
+        <p style={showWhenVisible}> {blog.user.name}</p>
         <div style={deleteAccess}>
           <button style={{ backgroundColor: 'blue' }} onClick={handleDelete}>
             remove
