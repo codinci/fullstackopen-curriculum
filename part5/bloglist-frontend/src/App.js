@@ -39,7 +39,7 @@ const App = () => {
       setPassword('')
       setMessage({
         type: 'success',
-        info: `${user.username} logged in`,
+        info: `${user.name} logged in`,
       })
       setTimeout(() => {
         setMessage(null)

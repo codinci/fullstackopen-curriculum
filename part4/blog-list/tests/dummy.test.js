@@ -1,11 +1,11 @@
-const dummy = require("../utils/dummy")
+const dummy = require('../utils/dummy')
 
-describe("a dummy test", () => {
-  test("dummy returns one", () => {
-    const blog = [];
+describe('a dummy test', () => {
+	test('dummy returns one', () => {
+		const blog = []
 
-    const result = dummy(blog);
-    expect(result).toBe(1);
-  });
-});
+		const result = dummy(blog)
+		expect(result).toBe(1)
+	})
+})
 
