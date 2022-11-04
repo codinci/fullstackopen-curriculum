@@ -33,7 +33,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <span>{blog.title}</span>{' '}
       <span>{blog.author}</span>{' '}
       <button id='view-button' onClick={() => setVisible(!visible)}>
@@ -49,7 +49,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
         </div>
         <p style={showWhenVisible}> {blog.user.name}</p>
         <div style={deleteAccess}>
-          <button style={{ backgroundColor: 'blue' }} onClick={handleDelete}>
+          <button id='delete-button' style={{ backgroundColor: 'blue' }} onClick={handleDelete}>
             remove
           </button>
         </div>
