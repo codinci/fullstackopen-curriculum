@@ -110,7 +110,7 @@ describe('Blog app', function () {
           })
           cy.get('#logout-button').click()
         })
-        it('Cannot delete unauthorised blog ', function () {
+        it.only('Cannot delete unauthorised blog ', function () {
           cy.login('test', 'Test123')
           cy.request('GET', 'http://localhost:3003/api/blogs')
           cy.get('#view-button').click()
