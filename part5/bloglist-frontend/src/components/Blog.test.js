@@ -22,6 +22,9 @@ const testUser = {
   name: 'Normal user',
   id: '6jshssb87wn2s923'
 }
+
+const user = userEvent.setup()
+
 test('renders title and author only', () => {
 
   render(<Blog blog={testBlog} user={testUser} />)
@@ -38,7 +41,7 @@ test('renders title and author only', () => {
   expect(likesElement).toHaveStyle('display:none')
 })
 
-test('clicking button makes likes and url visible', async () => {
+test('clicking view button makes likes and url visible', async () => {
   render(<Blog blog={testBlog} user={testUser} />)
 
   const urlElement = screen.queryByText('jest.com')
@@ -48,8 +51,7 @@ test('clicking button makes likes and url visible', async () => {
   expect(likesElement).toHaveStyle('display:none')
 
   const visibilityButton = screen.getByText('view')
-  const userClickEvent = userEvent.setup()
-  await userClickEvent.click(visibilityButton)
+  await user.click(visibilityButton)
 
   const urlAfterClick = screen.queryByText('jest.com')
   const likesAfterClick = screen.queryByText('Likes 4')
@@ -63,8 +65,7 @@ test('like button pressed twice', async () => {
   render(<Blog blog={testBlog} user={testUser} updateBlog={mockHandler} />)
 
   const likeButton = screen.getByText('like')
-  const userClickEvent = userEvent.setup()
-  await userClickEvent.click(likeButton)
-  await userClickEvent.click(likeButton)
+  await user.click(likeButton)
+  await user.click(likeButton)
   expect(mockHandler.mock.calls).toHaveLength(2)
 })
