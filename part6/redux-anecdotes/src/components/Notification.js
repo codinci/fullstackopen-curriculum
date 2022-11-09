@@ -8,16 +8,13 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1
   }
-  return <>
-    {notification.message === null ?
-      <div style={{ display: 'none' }}>
-      </div>
-      :
+  if (notification !== null) {
+    return (
       <div style={style}>
-        {notification.message}
+        {notification}
       </div>
-    }
-  </>;
+    )
+  }
 }
 
 export default Notification
