@@ -1,10 +1,9 @@
 import { useState } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Link,
-  useParams,
+  useMatch,
   useNavigate,
 } from "react-router-dom";
 
@@ -28,9 +27,7 @@ const Menu = () => {
   );
 };
 
-const Anecdote = ({ anecdotes }) => {
-  const id = useParams().id;
-  const anecdote = anecdotes.find((a) => a.id === Number(id));
+const Anecdote = ({ anecdote }) => {
   return (
     <div>
       <h2>
@@ -188,8 +185,13 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
+  const match = useMatch('/anecdotes/:id')
+  const anecdote = match
+    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
+    : null
+
   return (
-    <Router>
+    <div>
       <h1>Software Anecdotes</h1>
       <Menu />
       {notification !== "" ? (
@@ -200,14 +202,14 @@ const App = () => {
         <Route path="/about" element={<About />} />{" "}
         <Route
           path="/anecdotes/:id"
-          element={<Anecdote anecdotes={anecdotes} />}
+          element={<Anecdote anecdote={anecdote} />}
         />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
       </Routes>
       <div>
         <Footer />
       </div>
-    </Router>
+    </div>
   );
 };
 
