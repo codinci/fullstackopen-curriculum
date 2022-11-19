@@ -5,6 +5,8 @@ import App from './App'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Router>
-    <App />
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
   </Router>
 );
