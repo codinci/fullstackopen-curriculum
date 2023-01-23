@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Routes,
-  Route,
-  Link,
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Link, useMatch, useNavigate } from "react-router-dom";
 import { useField } from "./hooks";
 
 const Menu = () => {
@@ -29,12 +23,19 @@ const Menu = () => {
 };
 
 const Anecdote = ({ anecdote }) => {
+  const [votes, setVotes] = useState(anecdote.votes);
   return (
     <div>
       <h2>
         {anecdote.content} by {anecdote.author}
       </h2>
-      <p>has {anecdote.votes} votes</p>
+      <p>
+        has{" "}
+        <button onClick={() => setVotes((prevVotes) => prevVotes + 1)}>
+          {votes}
+        </button>{" "}
+        votes
+      </p>
       <p>
         for more info see <a href="{anecdote.info}">{anecdote.info}</a>
       </p>
@@ -42,18 +43,20 @@ const Anecdote = ({ anecdote }) => {
   );
 };
 
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+const AnecdoteList = ({ anecdotes }) => {
+  return (
+    <div>
+      <h2>Anecdotes</h2>
+      <ul>
+        {anecdotes.map((anecdote) => (
+          <li key={anecdote.id}>
+            <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const About = () => (
   <div>
@@ -89,9 +92,9 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const content = useField("text");
+  const author = useField("text");
+  const info = useField("text");
 
   const navigate = useNavigate();
 
@@ -107,11 +110,11 @@ const CreateNew = (props) => {
   };
 
   const handleReset = (event) => {
-    event.preventDefault()
-    content.onReset()
-    author.onReset()
-    info.onReset()
-  }
+    event.preventDefault();
+    content.onReset();
+    author.onReset();
+    info.onReset();
+  };
 
   return (
     <div>
@@ -153,7 +156,7 @@ const App = () => {
       content: "Premature optimization is the root of all evil",
       author: "Donald Knuth",
       info: "http://wiki.c2.com/?PrematureOptimization",
-      votes: 0,
+      votes: 2,
       id: 2,
     },
   ]);
@@ -168,24 +171,10 @@ const App = () => {
       setNotification("");
     }, 5000);
   };
-
-  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
-
-  const vote = (id) => {
-    const anecdote = anecdoteById(id);
-
-    const voted = {
-      ...anecdote,
-      votes: anecdote.votes + 1,
-    };
-
-    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
-  };
-
-  const match = useMatch('/anecdotes/:id')
+  const match = useMatch("/anecdotes/:id");
   const anecdote = match
-    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
-    : null
+    ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
+    : null;
 
   return (
     <div>
