@@ -23,21 +23,13 @@ const notificationSlice = createSlice({
 export const { displaySuccessNotification, displayErrorNotification, clearNotification } =
   notificationSlice.actions;
 
-export const setSuccessNotification = (message, timer) => {
+export const setNotification = (message, timer, type) => {
   return (dispatch) => {
-    dispatch(displaySuccessNotification(message));
-    if (notificationTimeOut) {
-      clearTimeout(notificationTimeOut);
+    if (type === 'success') {
+      dispatch(displaySuccessNotification(message));
+    } else {
+      dispatch(displayErrorNotification(message));
     }
-    notificationTimeOut = setTimeout(() => {
-      dispatch(clearNotification(null));
-    }, timer * 1000);
-  };
-};
-
-export const setErrorNotification = (message, timer) => {
-  return (dispatch) => {
-    dispatch(displayErrorNotification(message));
     if (notificationTimeOut) {
       clearTimeout(notificationTimeOut);
     }

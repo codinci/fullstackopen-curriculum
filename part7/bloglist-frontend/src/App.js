@@ -6,9 +6,9 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
-// import BlogForm from './components/BlogForm';
+import BlogForm from './components/BlogForm';
 import Toggable from './components/Toggable';
-import { setSuccessNotification, setErrorNotification } from './reducers/notificationReducer';
+import { setNotification } from './reducers/notificationReducer';
 
 const App = () => {
   // const [blogs, setBlogs] = useState([]);
@@ -38,9 +38,9 @@ const App = () => {
       setUser(user);
       setUserName('');
       setPassword('');
-      dispatch(setSuccessNotification(`${user.name} logged in`, 5));
+      dispatch(setNotification(`${user.name} logged in`, 5, 'success'));
     } catch (exception) {
-      dispatch(setErrorNotification(exception.response.data.error, 5));
+      dispatch(setNotification(exception.response.data.error, 5, 'error'));
     }
   };
 
@@ -57,32 +57,6 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogUser');
     window.location.reload(true);
   };
-
-  // const addBlog = async (blogObject) => {
-  //   blogFormRef.current.toggleVisibility();
-  //   try {
-  //     const newBlog = await blogService.create(blogObject);
-  //     const newBlogs = await blogService.getAll();
-  //     // setBlogs(newBlogs);
-  //     setMessage({
-  //       type: 'success',
-  //       info: `a new blog ${newBlog.title} by ${newBlog.author} added`
-  //     });
-  //     setTimeout(() => {
-  //       setMessage(null);
-  //     }, 5000);
-  //   } catch (exception) {
-  //     console.log(exception);
-  //     setMessage({
-  //       type: 'error',
-  //       info: `${exception.response.data.error}`
-  //     });
-  //     setTimeout(() => {
-  //       setMessage(null);
-  //     }, 5000);
-  //   }
-  // };
-
   // const updateBlog = async (id, updatedBlogObject) => {
   //   try {
   //     await blogService.update(id, updatedBlogObject);
@@ -136,7 +110,7 @@ const App = () => {
             log out
           </button>
           <Toggable buttonLabel="create new blog" ref={blogFormRef}>
-            {/* <BlogForm createBlog={addBlog} /> */}
+            <BlogForm />
           </Toggable>
           {sortByLikes.map((blog) => (
             <Blog
