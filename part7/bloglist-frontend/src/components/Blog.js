@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
+const Blog = ({ blog, user, handleUpdate }) => {
   const [visible, setVisible] = useState(false);
   const showWhenVisible = { display: visible ? '' : 'none' };
   const deleteAccess = {
@@ -14,22 +14,11 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
     marginBottom: 5
   };
 
-  const handleUpdate = () => {
-    const updatedBlog = {
-      title: blog.title,
-      author: blog.author,
-      likes: blog.likes + 1,
-      url: blog.url,
-      user: blog.user.id
-    };
-    updateBlog(blog.id, updatedBlog);
-  };
-
-  const handleDelete = () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog.id);
-    }
-  };
+  // const handleDelete = () => {
+  //   if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+  //     deleteBlog(blog.id);
+  //   }
+  // };
 
   return (
     <div className="blog" style={blogStyle}>
@@ -47,7 +36,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
         </div>
         <p style={showWhenVisible}> {blog.user.name}</p>
         <div style={deleteAccess}>
-          <button id="delete-button" style={{ backgroundColor: 'blue' }} onClick={handleDelete}>
+          <button id="delete-button" style={{ backgroundColor: 'blue' }}>
             remove
           </button>
         </div>
