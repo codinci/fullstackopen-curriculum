@@ -1,23 +1,18 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { initializeBlogs } from './reducers/blogsReducer';
+import { setNotification } from './reducers/notificationReducer';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
-import BlogForm from './components/BlogForm';
 import Toggable from './components/Toggable';
-import { setNotification } from './reducers/notificationReducer';
 import BlogList from './components/BlogList';
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  // const [message, setMessage] = useState(null);
-
-  const blogFormRef = useRef();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,35 +51,6 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogUser');
     window.location.reload(true);
   };
-  // const updateBlog = async (id, updatedBlogObject) => {
-  //   try {
-  //     await blogService.update(id, updatedBlogObject);
-  //     // setBlogs(blogs.map((blog) => (blog.id !== id ? blog : { ...blog, likes: blog.likes + 1 })));
-  //   } catch (exception) {
-  //     setMessage({
-  //       type: 'error',
-  //       info: `${exception.response.data.error}`
-  //     });
-  //     setTimeout(() => {
-  //       setMessage(null);
-  //     }, 5000);
-  //   }
-  // };
-
-  // const deleteBlog = async (id) => {
-  //   try {
-  //     await blogService.deleteBlog(id);
-  //     // setBlogs(blogs.filter((blog) => blog.id !== id));
-  //   } catch (exception) {
-  //     setMessage({
-  //       type: 'error',
-  //       info: `${exception.response.data.error}`
-  //     });
-  //     setTimeout(() => {
-  //       setMessage(null);
-  //     }, 5000);
-  //   }
-  // };
 
   return (
     <div>
@@ -106,9 +72,6 @@ const App = () => {
           <button id="logout-button" onClick={handleLogout}>
             log out
           </button>
-          <Toggable buttonLabel="create new blog" ref={blogFormRef}>
-            <BlogForm />
-          </Toggable>
           <BlogList user={user} />
         </div>
       )}
