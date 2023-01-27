@@ -1,25 +1,42 @@
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import blogService from '../services/blogs';
+import { userLogin } from '../reducers/loginReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
-const LoginForm = ({
-  handleSubmit,
-  username,
-  handleUserNameEntry,
-  password,
-  handlePasswordEntry
-}) => {
+const LoginForm = () => {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const user = { username: userName, password: password };
+    try {
+      dispatch(userLogin(user));
+      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user));
+      blogService.setToken(user);
+      setUserName('');
+      setPassword('');
+      dispatch(setNotification(`${user.username} logged in`, 5, 'success'));
+    } catch (exception) {
+      dispatch(setNotification('exception.response.data.error', 5, 'error'));
+    }
+  };
+
   return (
     <div>
       <h2>Log in to application</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div>
           {' '}
           username{' '}
           <input
             id="username"
             type="text"
-            value={username}
+            value={userName}
             name="Username"
-            onChange={handleUserNameEntry}
+            onChange={({ target }) => setUserName(target.value)}
           />{' '}
         </div>{' '}
         <div>
@@ -30,7 +47,7 @@ const LoginForm = ({
             type="password"
             value={password}
             name="Password"
-            onChange={handlePasswordEntry}
+            onChange={({ target }) => setPassword(target.value)}
           />{' '}
         </div>{' '}
         <button id="login-button" type="submit">
@@ -39,14 +56,6 @@ const LoginForm = ({
       </form>
     </div>
   );
-};
-
-LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleUserNameEntry: PropTypes.func.isRequired,
-  handlePasswordEntry: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
 };
 
 export default LoginForm;

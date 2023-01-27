@@ -5,8 +5,9 @@ import { likeBlog, removeBlog } from '../reducers/blogsReducer';
 import BlogForm from './BlogForm';
 import Toggable from './Toggable';
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.authenticatedUser);
   const sortByLikes = blogs.slice().sort((a, b) => b.likes - a.likes);
   const dispatch = useDispatch();
   const blogFormRef = useRef();

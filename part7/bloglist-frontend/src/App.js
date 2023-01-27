@@ -1,48 +1,32 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from './reducers/loginReducer';
 import { initializeBlogs } from './reducers/blogsReducer';
-import { setNotification } from './reducers/notificationReducer';
+import { initializeUsers } from './reducers/usersReducer';
 import blogService from './services/blogs';
-import loginService from './services/login';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Toggable from './components/Toggable';
 import BlogList from './components/BlogList';
+import Users from './components/Users';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.authenticatedUser);
 
   useEffect(() => {
     dispatch(initializeBlogs());
   }, [dispatch]);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const user = await loginService.login({
-        username,
-        password
-      });
-
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setUserName('');
-      setPassword('');
-      dispatch(setNotification(`${user.name} logged in`, 5, 'success'));
-    } catch (exception) {
-      dispatch(setNotification(exception.response.data.error, 5, 'error'));
-    }
-  };
+  useEffect(() => {
+    dispatch(initializeUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUser(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -55,24 +39,19 @@ const App = () => {
   return (
     <div>
       <Notification />
-      {user === null ? (
+      {loggedInUser === null ? (
         <Toggable buttonLabel="login">
-          <LoginForm
-            username={username}
-            password={password}
-            handleSubmit={handleLogin}
-            handleUserNameEntry={({ target }) => setUserName(target.value)}
-            handlePasswordEntry={({ target }) => setPassword(target.value)}
-          />
+          <LoginForm />
         </Toggable>
       ) : (
         <div>
           <h2>blogs</h2>
-          <span>{user.name} logged in</span>{' '}
+          <span>{loggedInUser.name} logged in</span>{' '}
           <button id="logout-button" onClick={handleLogout}>
             log out
           </button>
-          <BlogList user={user} />
+          <BlogList />
+          <Users />
         </div>
       )}
     </div>
