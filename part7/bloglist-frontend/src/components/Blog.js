@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const Blog = ({ blog, user, handleUpdate, handleDeletion }) => {
+const Blog = ({ blog, handleUpdate, handleDeletion }) => {
   const [visible, setVisible] = useState(false);
+  const user = useSelector((state) => state.authenticatedUser);
   const showWhenVisible = { display: visible ? '' : 'none' };
-  const deleteAccess = {
-    display: blog.user.username === user.username ? '' : 'none'
-  };
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,11 +14,12 @@ const Blog = ({ blog, user, handleUpdate, handleDeletion }) => {
     marginBottom: 5
   };
 
-  // const handleDelete = () => {
-  //   if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-  //     deleteBlog(blog.id);
-  //   }
-  // };
+  if (user === null) {
+    return null;
+  }
+  const deleteAccess = {
+    display: blog.user.username === user.username ? '' : 'none'
+  };
 
   return (
     <div className="blog" style={blogStyle}>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import blogService from '../services/blogs';
+import { useNavigate } from 'react-router-dom';
 import { userLogin } from '../reducers/loginReducer';
 import { setNotification } from '../reducers/notificationReducer';
 
@@ -8,19 +8,19 @@ const LoginForm = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = (event) => {
     event.preventDefault();
     const user = { username: userName, password: password };
     try {
       dispatch(userLogin(user));
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user));
-      blogService.setToken(user);
+      navigate('/');
       setUserName('');
       setPassword('');
       dispatch(setNotification(`${user.username} logged in`, 5, 'success'));
     } catch (exception) {
-      dispatch(setNotification('exception.response.data.error', 5, 'error'));
+      dispatch(setNotification(exception.response.data.error, 5, 'error'));
     }
   };
 

@@ -2,6 +2,7 @@ import Blog from './Blog';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { likeBlog, removeBlog } from '../reducers/blogsReducer';
+import blogService from '../services/blogs';
 import BlogForm from './BlogForm';
 import Toggable from './Toggable';
 
@@ -11,6 +12,7 @@ const BlogList = () => {
   const sortByLikes = blogs.slice().sort((a, b) => b.likes - a.likes);
   const dispatch = useDispatch();
   const blogFormRef = useRef();
+  blogService.setToken(user);
 
   const updateBlog = (blog) => {
     const updatedBlog = {
