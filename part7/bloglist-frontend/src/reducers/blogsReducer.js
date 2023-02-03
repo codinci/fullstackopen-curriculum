@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import blogService from '../services/blogs';
+import { setNotification } from '../reducers/notificationReducer';
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -21,11 +22,19 @@ const blogSlice = createSlice({
     },
     deleteBlog(state, action) {
       return state.filter((blog) => blog.id !== action.payload);
+    },
+    commentBlog(state, action) {
+      return state.map((blog) => {
+        if (blog.id === action.payload.id) {
+          return { ...blog, comments: action.payload.comments };
+        }
+        return blog;
+      });
     }
   }
 });
 
-export const { setBlogs, appendBlogs, updateBlog, deleteBlog } = blogSlice.actions;
+export const { setBlogs, appendBlogs, updateBlog, deleteBlog, commentBlog } = blogSlice.actions;
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -36,8 +45,13 @@ export const initializeBlogs = () => {
 
 export const createBlog = (blog) => {
   return async (dispatch) => {
-    const newBlog = await blogService.create(blog);
-    dispatch(appendBlogs(newBlog));
+    try {
+      const newBlog = await blogService.create(blog);
+      dispatch(appendBlogs(newBlog));
+      dispatch(setNotification(`${blog.title} by ${blog.author} added`, 5, 'success'));
+    } catch (exception) {
+      dispatch(setNotification(exception.response.data.error, 5, 'error'));
+    }
   };
 };
 
@@ -52,6 +66,13 @@ export const removeBlog = (id) => {
   return async (dispatch) => {
     await blogService.deleteBlog(id);
     dispatch(deleteBlog(id));
+  };
+};
+
+export const addComment = (id, comment) => {
+  return async (dispatch) => {
+    const commentedBlog = await blogService.createComment(id, comment);
+    dispatch(commentBlog(commentedBlog));
   };
 };
 

@@ -1,35 +1,20 @@
-import Blog from './Blog';
 import { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { likeBlog, removeBlog } from '../reducers/blogsReducer';
-import blogService from '../services/blogs';
+import { useSelector } from 'react-redux';
 import BlogForm from './BlogForm';
 import Toggable from './Toggable';
+import { Link } from 'react-router-dom';
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.authenticatedUser);
   const sortByLikes = blogs.slice().sort((a, b) => b.likes - a.likes);
-  const dispatch = useDispatch();
   const blogFormRef = useRef();
-  blogService.setToken(user);
 
-  const updateBlog = (blog) => {
-    const updatedBlog = {
-      author: blog.author,
-      title: blog.title,
-      id: blog.id,
-      url: blog.url,
-      likes: blog.likes + 1,
-      user: blog.user.id
-    };
-    dispatch(likeBlog(updatedBlog));
-  };
-
-  const deleteBlog = (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      dispatch(removeBlog(blog.id));
-    }
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
   };
 
   return (
@@ -38,13 +23,11 @@ const BlogList = () => {
         <BlogForm />
       </Toggable>
       {sortByLikes.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          handleUpdate={() => updateBlog(blog)}
-          handleDeletion={() => deleteBlog(blog)}
-        />
+        <div className="blog" style={blogStyle} key={blog.id}>
+          <Link to={`/blogs/${blog.id}`}>
+            {blog.title} {blog.author}
+          </Link>
+        </div>
       ))}
     </div>
   );

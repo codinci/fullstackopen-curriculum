@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLogin } from '../reducers/loginReducer';
-import { setNotification } from '../reducers/notificationReducer';
 
 const LoginForm = () => {
   const [userName, setUserName] = useState('');
@@ -13,15 +12,10 @@ const LoginForm = () => {
   const handleLogin = (event) => {
     event.preventDefault();
     const user = { username: userName, password: password };
-    try {
-      dispatch(userLogin(user));
-      navigate('/');
-      setUserName('');
-      setPassword('');
-      dispatch(setNotification(`${user.username} logged in`, 5, 'success'));
-    } catch (exception) {
-      dispatch(setNotification(exception.response.data.error, 5, 'error'));
-    }
+    dispatch(userLogin(user));
+    navigate('/');
+    setUserName('');
+    setPassword('');
   };
 
   return (
