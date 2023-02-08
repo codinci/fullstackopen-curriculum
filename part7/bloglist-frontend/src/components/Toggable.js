@@ -1,5 +1,9 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const Toggable = forwardRef((props, refs) => {
   const [visible, setVisible] = useState(false);
@@ -18,15 +22,24 @@ const Toggable = forwardRef((props, refs) => {
   });
 
   return (
-    <div>
+    <Container>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button variant="primary" onClick={toggleVisibility}>
+          {props.buttonLabel}
+        </Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        {console.log(props)}
+        <Row style={{ marginTop: 5, marginLeft: 1 }}>
+          <Col md={4}>
+            <Button variant="secondary" onClick={toggleVisibility}>
+              cancel
+            </Button>
+          </Col>
+        </Row>
       </div>
-    </div>
+    </Container>
   );
 });
 

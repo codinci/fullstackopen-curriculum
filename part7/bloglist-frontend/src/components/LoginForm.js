@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLogin } from '../reducers/loginReducer';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 
 const LoginForm = () => {
   const [userName, setUserName] = useState('');
@@ -19,36 +22,33 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          {' '}
-          username{' '}
-          <input
-            id="username"
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
             type="text"
             value={userName}
             name="Username"
             onChange={({ target }) => setUserName(target.value)}
-          />{' '}
-        </div>{' '}
-        <div>
-          {' '}
-          password{' '}
-          <input
-            id="password"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
+            placeholder="Password"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
-          />{' '}
-        </div>{' '}
-        <button id="login-button" type="submit">
+          />
+        </Form.Group>
+        <Button variant="primary" id="login-button" type="submit">
           login
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Form>
+    </Container>
   );
 };
 

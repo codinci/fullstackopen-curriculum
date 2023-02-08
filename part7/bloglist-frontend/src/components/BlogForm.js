@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBlog } from '../reducers/blogsReducer';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const BlogForm = () => {
   const [title, setTitle] = useState('');
@@ -18,52 +23,46 @@ const BlogForm = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h1>create new</h1>
-      <form onSubmit={addBlog}>
-        <div>
-          {' '}
-          Title{' '}
-          <input
-            id="title"
+      <Form onSubmit={addBlog}>
+        <Form.Group className="mb-3" controlId="formBasicTitle">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
             type="text"
             value={title}
-            name="title"
-            placeholder="title"
+            name="Title"
             onChange={({ target }) => setTitle(target.value)}
-          />{' '}
-        </div>{' '}
-        <div>
-          {' '}
-          author{' '}
-          <input
-            id="author"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicAuthor">
+          <Form.Label>Author</Form.Label>
+          <Form.Control
             type="text"
             value={author}
             name="Author"
-            placeholder="author"
             onChange={({ target }) => setAuthor(target.value)}
-          />{' '}
-        </div>{' '}
-        <div>
-          {' '}
-          Url{' '}
-          <input
-            id="url"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicUrl">
+          <Form.Label>Url</Form.Label>
+          <Form.Control
             type="text"
             value={url}
             name="Url"
-            placeholder="url"
             onChange={({ target }) => setUrl(target.value)}
-          />{' '}
-        </div>{' '}
-        <br></br>
-        <button id="create-button" type="submit">
-          create
-        </button>
-      </form>
-      <br></br>
-    </div>
+          />
+        </Form.Group>
+        <Row>
+          <Col md={4}>
+            {' '}
+            <Button id="create-button" type="submit">
+              create
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </Container>
   );
 };
 

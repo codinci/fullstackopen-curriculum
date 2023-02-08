@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Routes, Route, Link, Navigate, useMatch, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useMatch, useNavigate } from 'react-router-dom';
 import { initializeUser } from './reducers/loginReducer';
 import { initializeUsers } from './reducers/usersReducer';
 import { initializeBlogs } from './reducers/blogsReducer';
@@ -12,6 +12,11 @@ import Users from './components/Users';
 import Logout from './components/Logout';
 import User from './components/User';
 import Blog from './components/Blog';
+
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,7 +35,6 @@ const App = () => {
   const blog = matchBlog ? blogs.find((b) => b.id === matchBlog.params.id) : null;
 
   const updateBlog = (blog) => {
-    console.log(blog);
     const updatedBlog = {
       author: blog.author,
       title: blog.title,
@@ -49,33 +53,36 @@ const App = () => {
     }
   };
 
-  const padding = {
-    padding: 5
-  };
-
   return (
     <div>
       <Notification />
-      <div>
-        <Link style={padding} to="/">
-          Blogs
-        </Link>
-        <Link style={padding} to="/users">
-          Users
-        </Link>
-        {loggedInUser ? (
-          <>
-            <em>{loggedInUser.name} logged in</em>
-            <Logout />
-          </>
-        ) : (
-          <Link style={padding} to="/login">
-            {' '}
-            Login
-          </Link>
-        )}
-        <h2>blog app</h2>
-      </div>
+      <Navbar bg="light" variant="light">
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>Blog App</Navbar.Brand>
+          </LinkContainer>
+          <Nav justify variant="tabs">
+            <LinkContainer to="/">
+              <Nav.Link>Blogs</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/users">
+              <Nav.Link>Users</Nav.Link>
+            </LinkContainer>
+          </Nav>
+          <Navbar.Collapse className="justify-content-end">
+            {loggedInUser ? (
+              <Navbar.Text>
+                {loggedInUser.name} logged in <Logout />
+              </Navbar.Text>
+            ) : (
+              <LinkContainer to="/login">
+                <Nav.Link>Login</Nav.Link>
+              </LinkContainer>
+            )}
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
       <Routes>
         <Route
           path="/"

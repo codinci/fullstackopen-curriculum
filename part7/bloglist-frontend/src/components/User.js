@@ -1,3 +1,5 @@
+import Container from 'react-bootstrap/Container';
+
 const User = ({ user }) => {
   if (!user) {
     return null;
@@ -5,7 +7,7 @@ const User = ({ user }) => {
   const sortByLikes = user.blogs.slice().sort((a, b) => b.likes - a.likes);
 
   return (
-    <div>
+    <Container>
       <h2>{user.name}</h2>
       {user.blogs.length > 0 ? (
         <>
@@ -19,7 +21,7 @@ const User = ({ user }) => {
       ) : (
         <p>User has no blogs at the moment.</p>
       )}
-    </div>
+    </Container>
   );
 };
 
